@@ -20,12 +20,12 @@ module.exports = async (query, request) => {
     try {
       const result = await matchID(query.id, query.source)
       logger.info('Starting unblock(uses modules unblock):', query.id, result)
-      const useProxy = process.env.ENABLE_PROXY || 'false'
+      const useProxy = query.env?.ENABLE_PROXY || process.env.ENABLE_PROXY || 'false'
       let proxyUrl = ''
       if (result.data.url && result.data.url.includes('kuwo')) {
         proxyUrl =
-          useProxy === 'true' && process.env.PROXY_URL
-            ? process.env.PROXY_URL + result.data.url
+          useProxy === 'true' && (query.env?.PROXY_URL || process.env.PROXY_URL)
+            ? (query.env?.PROXY_URL || process.env.PROXY_URL) + result.data.url
             : result.data.url
       }
       return {

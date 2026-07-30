@@ -10,9 +10,9 @@ module.exports = async (query, request) => {
       matchID,
     } = require('@neteasecloudmusicapienhanced/unblockmusic-utils')
     const result = await matchID(query.id, query.source)
-    const proxy = process.env.PROXY_URL
+    const proxy = query.env?.PROXY_URL || process.env.PROXY_URL
     logger.info('开始解灰', query.id, result)
-    const useProxy = process.env.ENABLE_PROXY || 'false'
+    const useProxy = query.env?.ENABLE_PROXY || process.env.ENABLE_PROXY || 'false'
     if (result.data.url && result.data.url.includes('kuwo')) {
       result.proxyUrl =
         useProxy === 'true' ? proxy + result.data.url : result.data.url

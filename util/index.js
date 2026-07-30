@@ -1,6 +1,8 @@
 const logger = require('./logger')
-const fs = require('fs')
-const path = require('path')
+const {
+  chinaIPRanges: chinaIPRangesData,
+  chinaIPRangesTotalCount,
+} = require('../src/generated/data')
 
 // IP地址转换函数
 function ipToInt(ip) {
@@ -35,43 +37,10 @@ function parseCIDR(cidr) {
   return { start, end, count, cidr }
 }
 
-// 从china_ip_ranges.txt加载中国IP段（CIDR格式）
-const chinaIPRanges = (function loadChinaIPRanges() {
-  try {
-    const filePath = path.join(__dirname, '../data/china_ip_ranges.txt')
-    const content = fs.readFileSync(filePath, 'utf-8')
-    const lines = content
-      .split('\n')
-      .filter((line) => line.trim() && !line.startsWith('#'))
-
-    const arr = []
-    let total = 0
-
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim()
-      if (!line) continue
-
-      const range = parseCIDR(line)
-      arr.push(range)
-      total += range.count
-    }
-
-    // 按IP段大小排序，提高随机选择效率
-    arr.sort((a, b) => b.count - a.count)
-
-    // attach total for convenience
-    arr.totalCount = total
-
-    // logger.info(
-    //   `Loaded ${arr.length} Chinese IP ranges from china_ip_ranges.txt, total ${total} IPs`,
-    // )
-    return arr
-  } catch (error) {
-    logger.error('Failed to load china_ip_ranges.txt:', error.message)
-    // 返回空数组，generateRandomChineseIP会使用兜底逻辑
-    return { totalCount: 0 }
-  }
-})()
+const chinaIPRanges = Object.assign(
+  chinaIPRangesData.slice(),
+  { totalCount: chinaIPRangesTotalCount },
+)
 const floor = Math.floor
 const random = Math.random
 const keys = Object.keys

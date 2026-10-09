@@ -5,11 +5,7 @@
   "scripts": {
     "dev": "nodemon app.js",
     "start": "node app.js",
-    "worker:routes": "node scripts/generate-worker-data.js && node scripts/generate-worker-routes.js",
-    "worker:dev": "pnpm worker:routes && npx wrangler dev",
-    "worker:deploy": "pnpm worker:routes && npx wrangler deploy",
     "test": "mocha -r intelli-espower-loader -t 60000 server.test.js main.test.js --exit",
-    "worker:test": "pnpm worker:routes && mocha test/worker-contract.test.js test/crypto-vectors.test.js --exit",
     "lint": "eslint \"**/*.{js,ts}\"",
     "lint-fix": "eslint --fix \"**/*.{js,ts}\"",
     "prepare": "husky install",
@@ -17,7 +13,11 @@
     "docs:check": "node scripts/format-docs.js --check",
     "pkgwin": "node scripts/build-pkg.js . -t node18-win-x64 -C GZip -o precompiled/app",
     "pkglinux": "node scripts/build-pkg.js . -t node18-linux-x64 -C GZip -o precompiled/app",
-    "pkgmacos": "node scripts/build-pkg.js . -t node18-macos-x64 -C GZip -o precompiled/app"
+    "pkgmacos": "node scripts/build-pkg.js . -t node18-macos-x64 -C GZip -o precompiled/app",
+    "worker:routes": "node scripts/generate-worker-data.js && node scripts/generate-worker-routes.js",
+    "worker:dev": "pnpm worker:routes && npx wrangler dev",
+    "worker:deploy": "pnpm worker:routes && npx wrangler deploy",
+    "worker:test": "pnpm worker:routes && mocha test/worker-contract.test.js test/crypto-vectors.test.js --exit"
   },
   "bin": "./app.js",
   "pkg": {
@@ -79,15 +79,8 @@
     "data"
   ],
   "dependencies": {
-<<<<<<< HEAD
-    "@neteasecloudmusicapienhanced/unblockmusic-utils": "^0.3.4",
-    "@noble/curves": "2.2.0",
-    "@noble/hashes": "2.2.0",
-    "axios": "^1.18.1",
-=======
     "@neteasecloudmusicapienhanced/unblockmusic-utils": "^0.4.5",
     "axios": "^1.20.0",
->>>>>>> upstream/main
     "crypto-js": "^4.2.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
@@ -102,7 +95,9 @@
     "safe-decode-uri-component": "^1.2.1",
     "tunnel": "^0.0.6",
     "xml2js": "^0.6.2",
-    "yargs": "^18.2.0"
+    "yargs": "^18.2.0",
+    "@noble/curves": "2.2.0",
+    "@noble/hashes": "2.2.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.7",

@@ -17,7 +17,7 @@ module.exports = async (query, request) => {
   const currentKeyVersion = query.currentKeyVersion || ''
 
   const data = {
-    appVersion: '9.1.65',
+    appVersion: '9.5.61',
     currentKeyVersion,
     deviceId,
     nonce,
@@ -32,10 +32,10 @@ module.exports = async (query, request) => {
 
   const res = await axios({
     method: 'POST',
-    url: APP_CONF.apiDomain + '/api/gorilla/anti/crawler/security/key/get',
+    url: APP_CONF.apiDomain + '/api/bsr/sk/get',
     headers: {
       'User-Agent':
-        'NeteaseMusic/9.1.65.240927161425(9001065);Dalvik/2.1.0 (Linux; U; Android 14; 23013RK75C Build/UKQ1.230804.001)',
+        'NeteaseMusic/9.5.61.260802021928(9005061);Dalvik/2.1.0 (Linux; U; Android 12; HBN-AL00 Build/cd737a2.0)',
       Cookie: deviceId ? `deviceId=${encodeURIComponent(deviceId)}` : '',
     },
     data: new URLSearchParams(data).toString(),
